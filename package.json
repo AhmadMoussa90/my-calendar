@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build-server":"tsc -p backend",
-    "start-server": "node backend/dist/app.js",
+    "build-server": "tsc -p backend",
+    "start-server": "nodemon backend/dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,6 +27,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.5.1"
   },
   "dependencies": {
