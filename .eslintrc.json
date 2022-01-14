@@ -1,13 +1,25 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "es2021": true
     },
-    "extends": ["airbnb", "prettier", "plugin:node/recommended"],
-    "plugins": ["prettier"],
+    "extends": [
+        "airbnb",
+        "prettier",
+        "plugin:node/recommended"
+    ],
+    "plugins": [
+        "prettier"
+    ],
     "parserOptions": {
-        "ecmaVersion": 13,
-        "sourceType": "module"
+        "ecmaVersion": 8,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true,
+            "experimentalObjectRestSpread": true
+        }
     },
     "rules": {
         "prettier/prettier": "error",
@@ -15,6 +27,8 @@
         "no-console": "error",
         "func-names": "off",
         "no-process-exit": "off",
-        "object-shorthand": "off"
+        "object-shorthand": "off",
+        "check-function": "off",
+        "node/no-unsupported-features/es-syntax": "off"
     }
 }
