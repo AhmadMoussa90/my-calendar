@@ -1,6 +1,5 @@
 import express from "express";
-import CompanyModel from "../models/company";
-import { Company } from "../models/company";
+import CompanyModel, { Company } from "../models/company";
 
 type CompanyRequest = {
   companyInput: Company;
