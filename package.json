@@ -6,7 +6,7 @@
     "build-server": "tsc -p backend",
     "lint-server": "eslint --ext .ts backend/src/** --no-error-on-unmatched-pattern",
     "start-server": "tsc -p backend && nodemon backend/dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "LOG_LEVEL=FATAL yarn jest --reporters=default -t \"\\[unit\\]\""
   },
   "repository": {
     "type": "git",
