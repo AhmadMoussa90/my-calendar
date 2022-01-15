@@ -8,8 +8,9 @@ import { Partner } from "../models/partner";
 import * as Requests from "../models/requests";
 import { Room } from "../models/room";
 import { TimeSlot } from "../models/timeSlot";
-import { UserResponse } from "../models/responses";
+import { RoomResponse, UserResponse } from "../models/responses";
 
+// TODO dublicated code
 export default {
   createCompany: async function ({
     companyInput,
@@ -57,22 +58,35 @@ export default {
 
   createRoom: async function ({
     roomInput,
-  }: Requests.RoomRequest): Promise<Room> {
+  }: Requests.RoomRequest): Promise<RoomResponse> {
+    const company = await CompanyLogic.getCompanyById(
+      roomInput.company.toString()
+    );
+    if (!company) throw new Error("Invalid company.");
+
     const existingRoom = await RoomLogic.getRoomByName(roomInput.name);
     if (existingRoom) throw new Error("Room exists already!");
 
-    const createdRoom = await RoomLogic.createRoom(roomInput.name);
+    const createdRoom = await RoomLogic.createRoom(
+      roomInput.name,
+      roomInput.company.toString()
+    );
 
-    return { _id: createdRoom!._id!.toString(), name: createdRoom!.name };
+    return {
+      _id: createdRoom!._id!.toString(),
+      name: createdRoom!.name,
+      company: company,
+    };
   },
 
-  room: async function ({ id }: Requests.IdRequest): Promise<Room> {
-    const room = await RoomLogic.getRoomById(id);
+  room: async function ({ id }: Requests.IdRequest): Promise<RoomResponse> {
+    const room = (await RoomLogic.getRoomById(id)) as UserResponse;
     if (!room) throw new Error("No room found!");
 
     return {
       _id: room._id!.toString(),
       name: room.name,
+      company: room.company,
     };
   },
 

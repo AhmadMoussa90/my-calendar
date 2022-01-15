@@ -2,8 +2,8 @@ import { buildSchema } from "graphql";
 
 export default buildSchema(`
     type Company {
-        _id: ID!
-        name: String!
+      _id: ID!
+      name: String!
     }
 
     type Partner {
@@ -14,6 +14,7 @@ export default buildSchema(`
     type Room {
       _id: ID!
       name: String!
+      company: Company!
     }
 
     type TimeSlot {
@@ -37,6 +38,7 @@ export default buildSchema(`
 
     input RoomInput {
       name: String!
+      company: ID!
     }
 
     input TimeSlotInput {
