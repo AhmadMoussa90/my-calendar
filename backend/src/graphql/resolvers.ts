@@ -5,35 +5,56 @@ import RoomModel, { Room } from "../models/room";
 import TimeSlotModel, { TimeSlot } from "../models/timeSlot";
 import UserModel, { User } from "../models/user";
 
+// TODO types & interfaces should be in separate file
 type CompanyRequest = {
   companyInput: Company;
 };
+
+interface CompanyResponse extends Company {
+  _id: string;
+}
 
 type PartnerRequest = {
   partnerInput: Partner;
 };
 
+interface PartnerResponse extends Partner {
+  _id: string;
+}
+
 type RoomRequest = {
   roomInput: Room;
 };
+
+interface RoomResponse extends Room {
+  _id: string;
+}
 
 type TimeSlotRequest = {
   timeSlotInput: TimeSlot;
 };
 
+interface TimeSlotResponse extends TimeSlot {
+  _id: string;
+}
+
 type UserRequest = {
   userInput: User;
 };
+
+interface UserResponse extends Omit<User, "company" | "password"> {
+  _id: string;
+  company: CompanyResponse;
+}
 
 type ID = {
   id: String;
 };
 
 export default {
-  createCompany: async function (
-    { companyInput }: CompanyRequest,
-    req: express.Request
-  ) {
+  createCompany: async function ({
+    companyInput,
+  }: CompanyRequest): Promise<CompanyResponse> {
     const existingCompany = await CompanyModel.findOne({
       name: companyInput.name,
     });
@@ -47,7 +68,7 @@ export default {
     return { _id: createdCompany._id.toString(), name: createdCompany.name };
   },
 
-  company: async function ({ id }: ID) {
+  company: async function ({ id }: ID): Promise<CompanyResponse> {
     const company = await CompanyModel.findById(id);
     if (!company) throw new Error("No company found!");
 
@@ -57,10 +78,9 @@ export default {
     };
   },
 
-  createPartner: async function (
-    { partnerInput }: PartnerRequest,
-    req: express.Request
-  ) {
+  createPartner: async function ({
+    partnerInput,
+  }: PartnerRequest): Promise<PartnerResponse> {
     const existingPartner = await PartnerModel.findOne({
       name: partnerInput.name,
     });
@@ -74,7 +94,7 @@ export default {
     return { _id: createdPartner._id.toString(), name: createdPartner.name };
   },
 
-  partner: async function ({ id }: ID) {
+  partner: async function ({ id }: ID): Promise<PartnerResponse> {
     const partner = await PartnerModel.findById(id);
     if (!partner) throw new Error("No partner found!");
 
@@ -87,7 +107,7 @@ export default {
   createRoom: async function (
     { roomInput }: RoomRequest,
     req: express.Request
-  ) {
+  ): Promise<RoomResponse> {
     const existingRoom = await RoomModel.findOne({ name: roomInput.name });
     if (existingRoom) throw new Error("Room exists already!");
 
@@ -99,7 +119,7 @@ export default {
     return { _id: createdRoom._id.toString(), name: createdRoom.name };
   },
 
-  room: async function ({ id }: ID) {
+  room: async function ({ id }: ID): Promise<RoomResponse> {
     const room = await RoomModel.findById(id);
     if (!room) throw new Error("No room found!");
 
@@ -112,7 +132,7 @@ export default {
   createTimeSlot: async function (
     { timeSlotInput }: TimeSlotRequest,
     req: express.Request
-  ) {
+  ): Promise<TimeSlotResponse> {
     const existingTimeSlot = await TimeSlotModel.findOne({
       startDate: timeSlotInput.startDate,
     });
@@ -129,7 +149,7 @@ export default {
     };
   },
 
-  timeSlot: async function ({ id }: ID) {
+  timeSlot: async function ({ id }: ID): Promise<TimeSlotResponse> {
     const timeSlot = await TimeSlotModel.findById(id);
     if (!timeSlot) throw new Error("No time slot found!");
 
@@ -139,7 +159,9 @@ export default {
     };
   },
 
-  createUser: async function ({ userInput }: UserRequest) {
+  createUser: async function ({
+    userInput,
+  }: UserRequest): Promise<UserResponse> {
     const company = await CompanyModel.findById(userInput.company);
     if (!company) throw new Error("Invalid company.");
 
@@ -154,12 +176,14 @@ export default {
     return {
       _id: createdUser._id.toString(),
       name: createdUser.name,
-      company: createdUser.company,
+      company: company,
     };
   },
 
-  user: async function ({ id }: ID) {
-    const user = await UserModel.findById(id).populate("company");
+  user: async function ({ id }: ID): Promise<UserResponse> {
+    const user = (await UserModel.findById(id).populate(
+      "company"
+    )) as UserResponse;
     if (!user) throw new Error("No user found.");
 
     return {
