@@ -111,9 +111,6 @@ export default {
     );
     if (!company) throw new Error("Invalid company.");
 
-    // const company = await CompanyModel.findById(userInput.company);
-    // if (!company) throw new Error("Invalid company.");
-
     const createdUser = await UserLogic.createUser(
       userInput.name,
       userInput.password,
