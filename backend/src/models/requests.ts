@@ -2,6 +2,7 @@ import { Appointment } from "./appointment";
 import { Company } from "./company";
 import { Partner } from "./partner";
 import { Partnership } from "./partnership";
+import { Reservation } from "./reservation";
 import { Room } from "./room";
 import { TimeSlot } from "./timeSlot";
 import { User } from "./user";
@@ -36,4 +37,8 @@ export type PartnershipRequest = {
 
 export type AppointmentRequest = {
   appointmentInput: Appointment;
+};
+
+export type ReservationRequest = {
+  reservationInput: Reservation;
 };

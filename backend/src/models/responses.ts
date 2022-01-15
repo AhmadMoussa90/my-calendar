@@ -2,6 +2,7 @@ import { Appointment } from "./appointment";
 import { Company } from "./company";
 import { Partner } from "./partner";
 import { Partnership } from "./partnership";
+import { Reservation } from "./reservation";
 import { Room } from "./room";
 import { TimeSlot } from "./timeSlot";
 import { User } from "./user";
@@ -29,4 +30,12 @@ export interface AppointmentResponse
   _id: string;
   room: RoomResponse;
   timeSlot: TimeSlot;
+}
+
+export interface ReservationResponse
+  extends Omit<Reservation, "user" | "partner" | "appointment"> {
+  _id: string;
+  user: UserResponse;
+  partner: Partner;
+  appointment: AppointmentResponse;
 }

@@ -40,6 +40,13 @@ export default buildSchema(`
       timeSlot: TimeSlot!
     }
 
+    type Reservation {
+      _id: ID!
+      user: User!
+      partner: Partner!
+      appointment: Appointment!
+    }
+
     input CompanyInput {
         name: String!
     }
@@ -73,6 +80,12 @@ export default buildSchema(`
       timeSlot: ID!
     }
 
+    input ReservationInput {
+      user: ID!
+      partner: ID!
+      appointment: ID!
+    }
+
     type RootQuery {
         company(id: ID!): Company!
         partner(id: ID!): Partner!
@@ -81,6 +94,7 @@ export default buildSchema(`
         user(id: ID!): User!
         partnership(id: ID!): Partnership!
         appointment(id: ID!): Appointment!
+        reservation(id: ID!): Reservation!
     }
 
     type RootMutation {
@@ -91,6 +105,7 @@ export default buildSchema(`
         createUser(userInput: UserInput): User!
         createPartnership(partnershipInput: PartnershipInput): Partnership!
         createAppointment(appointmentInput: AppointmentInput): Appointment!
+        createReservation(reservationInput: ReservationInput): Reservation!
     }
 
     schema {

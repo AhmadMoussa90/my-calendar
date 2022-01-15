@@ -5,6 +5,7 @@ import * as TimeSlotLogic from "../logic/timeSlotLogic";
 import * as UserLogic from "../logic/userLogic";
 import * as PartnershipLogic from "../logic/partnershipLogic";
 import * as AppointmentLogic from "../logic/appointmentLogic";
+import * as ReservationLogic from "../logic/reservationLogic";
 import { Company } from "../models/company";
 import { Partner } from "../models/partner";
 import * as Requests from "../models/requests";
@@ -15,6 +16,7 @@ import {
   RoomResponse,
   UserResponse,
   AppointmentResponse,
+  ReservationResponse,
 } from "../models/responses";
 
 // TODO dublicated code
@@ -231,6 +233,52 @@ export default {
       _id: appointment._id.toString(),
       room: appointment.room,
       timeSlot: appointment.timeSlot,
+    };
+  },
+
+  createReservation: async function ({
+    reservationInput,
+  }: Requests.ReservationRequest): Promise<ReservationResponse> {
+    const user = await UserLogic.getUserById(reservationInput.user.toString());
+    if (!user) throw new Error("Invalid user.");
+
+    const partner = await PartnerLogic.getPartnerById(
+      reservationInput.partner.toString()
+    );
+    if (!partner) throw new Error("Invalid partner.");
+
+    const appointment = await AppointmentLogic.getAppointmentById(
+      reservationInput.appointment.toString()
+    );
+    if (!appointment) throw new Error("Invalid appointment.");
+
+    const createdReservation = await ReservationLogic.createReservation(
+      reservationInput.user.toString(),
+      reservationInput.partner.toString(),
+      reservationInput.appointment.toString()
+    );
+
+    return {
+      _id: createdReservation!._id!.toString(),
+      user: user,
+      partner: partner,
+      appointment: appointment,
+    };
+  },
+
+  reservation: async function ({
+    id,
+  }: Requests.IdRequest): Promise<ReservationResponse> {
+    const reservation = (await ReservationLogic.getReservationById(
+      id
+    )) as ReservationResponse;
+    if (!reservation) throw new Error("No reservation found.");
+
+    return {
+      _id: reservation._id.toString(),
+      user: reservation.user,
+      partner: reservation.partner,
+      appointment: reservation.appointment,
     };
   },
 };
