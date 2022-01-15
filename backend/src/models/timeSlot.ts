@@ -2,11 +2,11 @@ import { model, Schema } from "mongoose";
 
 // TODO start_date's type should be date
 export interface TimeSlot {
-  start_date: string;
+  startDate: string;
 }
 
 const TimeSlotSchema = new Schema<TimeSlot>({
-  start_date: {
+  startDate: {
     type: String,
     required: true
   }
