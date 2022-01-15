@@ -3,12 +3,17 @@ import * as PartnerLogic from "../logic/partnerLogic";
 import * as RoomLogic from "../logic/roomLogic";
 import * as timeSlotLogic from "../logic/timeSlotLogic";
 import * as UserLogic from "../logic/userLogic";
+import * as PartnershipLogic from "../logic/partnershipLogic";
 import { Company } from "../models/company";
 import { Partner } from "../models/partner";
 import * as Requests from "../models/requests";
 import { Room } from "../models/room";
 import { TimeSlot } from "../models/timeSlot";
-import { RoomResponse, UserResponse } from "../models/responses";
+import {
+  PartnershipResponse,
+  RoomResponse,
+  UserResponse,
+} from "../models/responses";
 
 // TODO dublicated code
 export default {
@@ -146,6 +151,46 @@ export default {
       _id: user._id.toString(),
       name: user.name,
       company: user.company,
+    };
+  },
+
+  createPartnership: async function ({
+    partnershipInput,
+  }: Requests.PartnershipRequest): Promise<PartnershipResponse> {
+    const company = await CompanyLogic.getCompanyById(
+      partnershipInput.company.toString()
+    );
+    if (!company) throw new Error("Invalid company.");
+
+    const partner = await PartnerLogic.getPartnerById(
+      partnershipInput.partner.toString()
+    );
+    if (!partner) throw new Error("Invalid partner.");
+
+    const createdPartnership = await PartnershipLogic.createPartnership(
+      partnershipInput.partner.toString(),
+      partnershipInput.company.toString()
+    );
+
+    return {
+      _id: createdPartnership!._id!.toString(),
+      partner: partner,
+      company: company,
+    };
+  },
+
+  partnership: async function ({
+    id,
+  }: Requests.IdRequest): Promise<PartnershipResponse> {
+    const partnership = (await PartnershipLogic.getPartnershipById(
+      id
+    )) as PartnershipResponse;
+    if (!partnership) throw new Error("No partnership found.");
+
+    return {
+      _id: partnership._id.toString(),
+      partner: partnership.partner,
+      company: partnership.company,
     };
   },
 };

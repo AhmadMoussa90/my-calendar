@@ -1,5 +1,6 @@
 import { Company } from "./company";
 import { Partner } from "./partner";
+import { Partnership } from "./partnership";
 import { Room } from "./room";
 import { TimeSlot } from "./timeSlot";
 import { User } from "./user";
@@ -26,4 +27,8 @@ export type TimeSlotRequest = {
 
 export type UserRequest = {
   userInput: User;
+};
+
+export type PartnershipRequest = {
+  partnershipInput: Partnership;
 };

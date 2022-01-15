@@ -28,6 +28,12 @@ export default buildSchema(`
       company: Company!
     }
 
+    type Partnership {
+      _id: ID!
+      partner: Partner!
+      company: Company!
+    }
+
     input CompanyInput {
         name: String!
     }
@@ -51,12 +57,18 @@ export default buildSchema(`
       company: ID!
     }
 
+    input PartnershipInput {
+      partner: ID!
+      company: ID!
+    }
+
     type RootQuery {
         company(id: ID!): Company!
         partner(id: ID!): Partner!
         room(id: ID!): Room!
         timeSlot(id: ID!): TimeSlot!
         user(id: ID!): User!
+        partnership(id: ID!): Partnership!
     }
 
     type RootMutation {
@@ -65,6 +77,7 @@ export default buildSchema(`
         createRoom(roomInput: RoomInput): Room!
         createTimeSlot(timeSlotInput: TimeSlotInput): TimeSlot!
         createUser(userInput: UserInput): User!
+        createPartnership(partnershipInput: PartnershipInput): Partnership!
     }
 
     schema {
