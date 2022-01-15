@@ -5,7 +5,7 @@
   "scripts": {
     "build-server": "tsc -p backend",
     "lint-server": "eslint --ext .ts backend/src/** --no-error-on-unmatched-pattern",
-    "start-server": "nodemon backend/dist/app.js",
+    "start-server": "tsc -p backend && nodemon backend/dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
