@@ -1,17 +1,17 @@
 import { model, Schema } from "mongoose";
 
 export interface Company {
-  name: string;
+  _id?: String;
+  name: String;
 }
 
 const CompanySchema = new Schema<Company>({
   name: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const CompanyModel = model<Company>("Company", CompanySchema);
 
 export default CompanyModel;
-

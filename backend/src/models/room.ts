@@ -1,14 +1,15 @@
 import { model, Schema } from "mongoose";
 
 export interface Room {
-  name: string;
+  _id?: String;
+  name: String;
 }
 
 const RoomSchema = new Schema<Room>({
   name: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const RoomModel = model<Room>("Room", RoomSchema);

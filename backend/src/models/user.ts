@@ -1,27 +1,27 @@
 import { model, Schema, Types } from "mongoose";
 
 export interface User {
-  name: string;
-  password: string;
+  _id?: String;
+  name: String;
+  password: String;
   company: Types.ObjectId;
 }
 
 const UserSchema = new Schema<User>({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   company: {
     type: Schema.Types.ObjectId,
-    ref: "Company"
-  }
+    ref: "Company",
+  },
 });
 
 const UserModel = model<User>("User", UserSchema);
 
 export default UserModel;
-
