@@ -11,7 +11,7 @@ export default buildSchema(`
     }
 
     type RootQuery {
-        company: Company!
+        company(id: ID!): Company!
     }
 
     type RootMutation {
