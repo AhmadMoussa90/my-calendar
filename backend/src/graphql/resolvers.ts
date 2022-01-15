@@ -3,6 +3,7 @@ import CompanyModel, { Company } from "../models/company";
 import PartnerModel, { Partner } from "../models/partner";
 import RoomModel, { Room } from "../models/room";
 import TimeSlotModel, { TimeSlot } from "../models/timeSlot";
+import UserModel, { User } from "../models/user";
 
 type CompanyRequest = {
   companyInput: Company;
@@ -20,15 +21,24 @@ type TimeSlotRequest = {
   timeSlotInput: TimeSlot;
 };
 
+type UserRequest = {
+  userInput: User;
+};
+
 type ID = {
   id: String;
-}
+};
 
 export default {
-  createCompany: async function( { companyInput }: CompanyRequest, req:express.Request ) {
-    const existingCompany = await CompanyModel.findOne({ name: companyInput.name });
+  createCompany: async function (
+    { companyInput }: CompanyRequest,
+    req: express.Request
+  ) {
+    const existingCompany = await CompanyModel.findOne({
+      name: companyInput.name,
+    });
     if (existingCompany) {
-      const error = new Error('Company exists already!');
+      const error = new Error("Company exists already!");
       throw error;
     }
 
@@ -40,22 +50,27 @@ export default {
     return { _id: createdCompany._id.toString(), name: createdCompany.name };
   },
 
-  company: async function({ id }: ID) {
+  company: async function ({ id }: ID) {
     const company = await CompanyModel.findById(id);
     if (!company) {
-      const error = new Error('No company found!');
+      const error = new Error("No company found!");
       throw error;
     }
     return {
       _id: company._id.toString(),
-      name: company.name
+      name: company.name,
     };
   },
 
-  createPartner: async function( { partnerInput }: PartnerRequest, req:express.Request ) {
-    const existingPartner = await PartnerModel.findOne({ name: partnerInput.name });
+  createPartner: async function (
+    { partnerInput }: PartnerRequest,
+    req: express.Request
+  ) {
+    const existingPartner = await PartnerModel.findOne({
+      name: partnerInput.name,
+    });
     if (existingPartner) {
-      const error = new Error('Partner exists already!');
+      const error = new Error("Partner exists already!");
       throw error;
     }
 
@@ -67,22 +82,25 @@ export default {
     return { _id: createdPartner._id.toString(), name: createdPartner.name };
   },
 
-  partner: async function({ id }: ID) {
+  partner: async function ({ id }: ID) {
     const partner = await PartnerModel.findById(id);
     if (!partner) {
-      const error = new Error('No partner found!');
+      const error = new Error("No partner found!");
       throw error;
     }
     return {
       _id: partner._id.toString(),
-      name: partner.name
+      name: partner.name,
     };
   },
 
-  createRoom: async function( { roomInput }: RoomRequest, req:express.Request ) {
+  createRoom: async function (
+    { roomInput }: RoomRequest,
+    req: express.Request
+  ) {
     const existingRoom = await RoomModel.findOne({ name: roomInput.name });
     if (existingRoom) {
-      const error = new Error('Room exists already!');
+      const error = new Error("Room exists already!");
       throw error;
     }
 
@@ -94,22 +112,27 @@ export default {
     return { _id: createdRoom._id.toString(), name: createdRoom.name };
   },
 
-  room: async function({ id }: ID) {
+  room: async function ({ id }: ID) {
     const room = await RoomModel.findById(id);
     if (!room) {
-      const error = new Error('No room found!');
+      const error = new Error("No room found!");
       throw error;
     }
     return {
       _id: room._id.toString(),
-      name: room.name
+      name: room.name,
     };
   },
 
-  createTimeSlot: async function( { timeSlotInput }: TimeSlotRequest, req:express.Request ) {
-    const existingTimeSlot = await TimeSlotModel.findOne({ startDate: timeSlotInput.startDate });
+  createTimeSlot: async function (
+    { timeSlotInput }: TimeSlotRequest,
+    req: express.Request
+  ) {
+    const existingTimeSlot = await TimeSlotModel.findOne({
+      startDate: timeSlotInput.startDate,
+    });
     if (existingTimeSlot) {
-      const error = new Error('Time slot exists already!');
+      const error = new Error("Time slot exists already!");
       throw error;
     }
 
@@ -118,18 +141,51 @@ export default {
     });
     const createdTimeSlot = await timeSlot.save();
 
-    return { _id: createdTimeSlot._id.toString(), startDate: createdTimeSlot.startDate };
+    return {
+      _id: createdTimeSlot._id.toString(),
+      startDate: createdTimeSlot.startDate,
+    };
   },
 
-  timeSlot: async function({ id }: ID) {
+  timeSlot: async function ({ id }: ID) {
     const timeSlot = await TimeSlotModel.findById(id);
     if (!timeSlot) {
-      const error = new Error('No time slot found!');
+      const error = new Error("No time slot found!");
       throw error;
     }
     return {
       _id: timeSlot._id.toString(),
-      startDate: timeSlot.startDate
+      startDate: timeSlot.startDate,
+    };
+  },
+
+  createUser: async function ({ userInput }: UserRequest) {
+    const company = await CompanyModel.findById(userInput.company);
+    if (!company) throw new Error("Invalid company.");
+
+    const user = new UserModel({
+      name: userInput.name,
+      password: userInput.password,
+      company: userInput.company,
+    });
+
+    const createdUser = await user.save();
+
+    return {
+      _id: createdUser._id.toString(),
+      name: createdUser.name,
+      company: createdUser.company,
+    };
+  },
+
+  user: async function ({ id }: ID) {
+    const user = await UserModel.findById(id).populate("company");
+    if (!user) throw new Error("No user found.");
+
+    return {
+      _id: user._id.toString(),
+      name: user.name,
+      company: user.company,
     };
   },
 };
