@@ -37,10 +37,7 @@ export default {
     const existingCompany = await CompanyModel.findOne({
       name: companyInput.name,
     });
-    if (existingCompany) {
-      const error = new Error("Company exists already!");
-      throw error;
-    }
+    if (existingCompany) throw new Error("Company exists already!");
 
     const company = new CompanyModel({
       name: companyInput.name,
@@ -52,10 +49,8 @@ export default {
 
   company: async function ({ id }: ID) {
     const company = await CompanyModel.findById(id);
-    if (!company) {
-      const error = new Error("No company found!");
-      throw error;
-    }
+    if (!company) throw new Error("No company found!");
+
     return {
       _id: company._id.toString(),
       name: company.name,
@@ -69,10 +64,7 @@ export default {
     const existingPartner = await PartnerModel.findOne({
       name: partnerInput.name,
     });
-    if (existingPartner) {
-      const error = new Error("Partner exists already!");
-      throw error;
-    }
+    if (existingPartner) throw new Error("Partner exists already!");
 
     const partner = new PartnerModel({
       name: partnerInput.name,
@@ -84,10 +76,8 @@ export default {
 
   partner: async function ({ id }: ID) {
     const partner = await PartnerModel.findById(id);
-    if (!partner) {
-      const error = new Error("No partner found!");
-      throw error;
-    }
+    if (!partner) throw new Error("No partner found!");
+
     return {
       _id: partner._id.toString(),
       name: partner.name,
@@ -99,10 +89,7 @@ export default {
     req: express.Request
   ) {
     const existingRoom = await RoomModel.findOne({ name: roomInput.name });
-    if (existingRoom) {
-      const error = new Error("Room exists already!");
-      throw error;
-    }
+    if (existingRoom) throw new Error("Room exists already!");
 
     const room = new RoomModel({
       name: roomInput.name,
@@ -114,10 +101,8 @@ export default {
 
   room: async function ({ id }: ID) {
     const room = await RoomModel.findById(id);
-    if (!room) {
-      const error = new Error("No room found!");
-      throw error;
-    }
+    if (!room) throw new Error("No room found!");
+
     return {
       _id: room._id.toString(),
       name: room.name,
@@ -131,10 +116,7 @@ export default {
     const existingTimeSlot = await TimeSlotModel.findOne({
       startDate: timeSlotInput.startDate,
     });
-    if (existingTimeSlot) {
-      const error = new Error("Time slot exists already!");
-      throw error;
-    }
+    if (existingTimeSlot) throw new Error("Time slot exists already!");
 
     const timeSlot = new TimeSlotModel({
       startDate: timeSlotInput.startDate,
@@ -149,10 +131,8 @@ export default {
 
   timeSlot: async function ({ id }: ID) {
     const timeSlot = await TimeSlotModel.findById(id);
-    if (!timeSlot) {
-      const error = new Error("No time slot found!");
-      throw error;
-    }
+    if (!timeSlot) throw new Error("No time slot found!");
+
     return {
       _id: timeSlot._id.toString(),
       startDate: timeSlot.startDate,
