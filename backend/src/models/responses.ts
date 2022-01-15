@@ -1,7 +1,9 @@
+import { Appointment } from "./appointment";
 import { Company } from "./company";
 import { Partner } from "./partner";
 import { Partnership } from "./partnership";
 import { Room } from "./room";
+import { TimeSlot } from "./timeSlot";
 import { User } from "./user";
 
 // TODO dublicated code
@@ -20,4 +22,11 @@ export interface PartnershipResponse
   _id: string;
   partner: Partner;
   company: Company;
+}
+
+export interface AppointmentResponse
+  extends Omit<Appointment, "room" | "timeSlot"> {
+  _id: string;
+  room: RoomResponse;
+  timeSlot: TimeSlot;
 }

@@ -1,9 +1,10 @@
 import * as CompanyLogic from "../logic/companyLogic";
 import * as PartnerLogic from "../logic/partnerLogic";
 import * as RoomLogic from "../logic/roomLogic";
-import * as timeSlotLogic from "../logic/timeSlotLogic";
+import * as TimeSlotLogic from "../logic/timeSlotLogic";
 import * as UserLogic from "../logic/userLogic";
 import * as PartnershipLogic from "../logic/partnershipLogic";
+import * as AppointmentLogic from "../logic/appointmentLogic";
 import { Company } from "../models/company";
 import { Partner } from "../models/partner";
 import * as Requests from "../models/requests";
@@ -13,6 +14,7 @@ import {
   PartnershipResponse,
   RoomResponse,
   UserResponse,
+  AppointmentResponse,
 } from "../models/responses";
 
 // TODO dublicated code
@@ -98,11 +100,11 @@ export default {
   createTimeSlot: async function ({
     timeSlotInput,
   }: Requests.TimeSlotRequest): Promise<TimeSlot> {
-    const existingTimeSlot = await timeSlotLogic.getTimeSlotByStartDate(
+    const existingTimeSlot = await TimeSlotLogic.getTimeSlotByStartDate(
       timeSlotInput.startDate
     );
     if (existingTimeSlot) throw new Error("Time slot exists already!");
-    const createdTimeSlot = await timeSlotLogic.createTimeSlot(
+    const createdTimeSlot = await TimeSlotLogic.createTimeSlot(
       timeSlotInput.startDate
     );
 
@@ -113,7 +115,7 @@ export default {
   },
 
   timeSlot: async function ({ id }: Requests.IdRequest): Promise<TimeSlot> {
-    const timeSlot = await timeSlotLogic.getTimeSlotById(id);
+    const timeSlot = await TimeSlotLogic.getTimeSlotById(id);
     if (!timeSlot) throw new Error("No time slot found!");
 
     return {
@@ -191,6 +193,44 @@ export default {
       _id: partnership._id.toString(),
       partner: partnership.partner,
       company: partnership.company,
+    };
+  },
+
+  createAppointment: async function ({
+    appointmentInput,
+  }: Requests.AppointmentRequest): Promise<AppointmentResponse> {
+    const room = await RoomLogic.getRoomById(appointmentInput.room.toString());
+    if (!room) throw new Error("Invalid room.");
+
+    const timeSlot = await TimeSlotLogic.getTimeSlotById(
+      appointmentInput.timeSlot.toString()
+    );
+    if (!timeSlot) throw new Error("Invalid timeSlot.");
+
+    const createdAppointment = await AppointmentLogic.createAppointment(
+      appointmentInput.room.toString(),
+      appointmentInput.timeSlot.toString()
+    );
+
+    return {
+      _id: createdAppointment!._id!.toString(),
+      room: room,
+      timeSlot: timeSlot,
+    };
+  },
+
+  appointment: async function ({
+    id,
+  }: Requests.IdRequest): Promise<AppointmentResponse> {
+    const appointment = (await AppointmentLogic.getAppointmentById(
+      id
+    )) as AppointmentResponse;
+    if (!appointment) throw new Error("No appointment found.");
+
+    return {
+      _id: appointment._id.toString(),
+      room: appointment.room,
+      timeSlot: appointment.timeSlot,
     };
   },
 };

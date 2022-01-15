@@ -1,3 +1,4 @@
+import { Appointment } from "./appointment";
 import { Company } from "./company";
 import { Partner } from "./partner";
 import { Partnership } from "./partnership";
@@ -31,4 +32,8 @@ export type UserRequest = {
 
 export type PartnershipRequest = {
   partnershipInput: Partnership;
+};
+
+export type AppointmentRequest = {
+  appointmentInput: Appointment;
 };
