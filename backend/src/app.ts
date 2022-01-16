@@ -20,7 +20,7 @@ app.use(
       const message = error.message || "an error";
 
       return { message };
-    }
+    },
   })
 );
 
@@ -31,7 +31,7 @@ mongoose
     "mongodb+srv://admin:adminadmin@constraintsolver-db.tw6br.mongodb.net/my_calendar?retryWrites=true&w=majority"
   )
   .then(() => {
-    app.listen(3000);
+    app.listen(5000);
     console.log("Database connection successful...");
     console.log("Server is running...");
   })
