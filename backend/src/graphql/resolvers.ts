@@ -18,6 +18,7 @@ import {
   AppointmentResponse,
   ReservationResponse,
 } from "../models/responses";
+import { User } from "../models/user";
 
 // TODO dublicated code
 export default {
@@ -284,5 +285,9 @@ export default {
 
   companies: async function (): Promise<Company[]> {
     return CompanyLogic.getAllCompanies();
+  },
+
+  companyUsers: async function ({ id }: Requests.IdRequest): Promise<User[]> {
+    return UserLogic.getCompanyUsers(id);
   },
 };
