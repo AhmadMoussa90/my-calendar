@@ -95,6 +95,7 @@ export default buildSchema(`
         partnership(id: ID!): Partnership!
         appointment(id: ID!): Appointment!
         reservation(id: ID!): Reservation!
+        companies: [Company!]!
     }
 
     type RootMutation {

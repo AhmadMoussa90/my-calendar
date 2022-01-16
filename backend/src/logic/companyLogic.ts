@@ -14,3 +14,7 @@ export async function createCompany(name: String): Promise<Company | null> {
   });
   return company.save();
 }
+
+export async function getAllCompanies(): Promise<Company[]> {
+  return CompanyModel.find();
+}

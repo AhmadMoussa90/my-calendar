@@ -281,4 +281,8 @@ export default {
       appointment: reservation.appointment,
     };
   },
+
+  companies: async function (): Promise<Company[]> {
+    return CompanyLogic.getAllCompanies();
+  },
 };
