@@ -41,3 +41,38 @@ export const TIMESLOTS = `
   }
 }
 `;
+
+export const COMPANY_CALENDAR = `
+query CompanyCalendar($id: ID!) {
+  companyCalendar(id: $id) {
+    rooms {
+      _id,
+      name
+    },
+    timeSlots {
+      _id,
+      startDate
+    },
+    companyReservations {
+      user {
+        _id,
+        name
+      },
+      partner {
+        _id,
+        name
+      },
+      appointment {
+        room {
+          _id,
+          name
+        },
+        timeSlot {
+          _id,
+          startDate
+        }
+      }
+    }
+  }
+}
+`;
