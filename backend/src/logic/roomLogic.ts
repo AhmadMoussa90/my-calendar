@@ -19,3 +19,7 @@ export async function createRoom(
   });
   return room.save();
 }
+
+export async function getAllRooms(): Promise<Room[]> {
+  return RoomModel.find();
+}

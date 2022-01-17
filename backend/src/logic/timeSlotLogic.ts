@@ -18,3 +18,7 @@ export async function createTimeSlot(
   });
   return timeSlot.save();
 }
+
+export async function getAllTimeSlots(): Promise<TimeSlot[]> {
+  return TimeSlotModel.find();
+}

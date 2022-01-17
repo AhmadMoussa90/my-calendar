@@ -94,7 +94,9 @@ export default buildSchema(`
         company(id: ID!): Company!
         partner(id: ID!): Partner!
         room(id: ID!): Room!
+        rooms: [Room!]!
         timeSlot(id: ID!): TimeSlot!
+        timeSlots: [TimeSlot!]!
         user(id: ID!): User!
         partnership(id: ID!): Partnership!
         appointment(id: ID!): Appointment!

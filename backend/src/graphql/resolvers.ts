@@ -19,6 +19,7 @@ import {
   LoginResponse,
 } from "../models/responses";
 import { User } from "../models/user";
+import { Room } from "../models/room";
 
 // TODO dublicated code
 export default {
@@ -100,6 +101,10 @@ export default {
     };
   },
 
+  rooms: async function (): Promise<Room[]> {
+    return RoomLogic.getAllRooms();
+  },
+
   createTimeSlot: async function ({
     timeSlotInput,
   }: Requests.TimeSlotRequest): Promise<TimeSlot> {
@@ -125,6 +130,10 @@ export default {
       _id: timeSlot!._id!.toString(),
       startDate: timeSlot.startDate,
     };
+  },
+
+  timeSlots: async function (): Promise<TimeSlot[]> {
+    return TimeSlotLogic.getAllTimeSlots();
   },
 
   createUser: async function ({
