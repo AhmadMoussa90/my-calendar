@@ -47,6 +47,10 @@ export default buildSchema(`
       appointment: Appointment!
     }
 
+    type AuthData {
+      _id: ID!
+    }
+
     input CompanyInput {
         name: String!
     }
@@ -108,6 +112,7 @@ export default buildSchema(`
         createPartnership(partnershipInput: PartnershipInput): Partnership!
         createAppointment(appointmentInput: AppointmentInput): Appointment!
         createReservation(reservationInput: ReservationInput): Reservation!
+        login(name: String!, password: String!): AuthData!
     }
 
     schema {

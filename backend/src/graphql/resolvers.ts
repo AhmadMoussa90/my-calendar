@@ -9,7 +9,6 @@ import * as ReservationLogic from "../logic/reservationLogic";
 import { Company } from "../models/company";
 import { Partner } from "../models/partner";
 import * as Requests from "../models/requests";
-import { Room } from "../models/room";
 import { TimeSlot } from "../models/timeSlot";
 import {
   PartnershipResponse,
@@ -17,6 +16,7 @@ import {
   UserResponse,
   AppointmentResponse,
   ReservationResponse,
+  LoginResponse,
 } from "../models/responses";
 import { User } from "../models/user";
 
@@ -289,5 +289,16 @@ export default {
 
   companyUsers: async function ({ id }: Requests.IdRequest): Promise<User[]> {
     return UserLogic.getCompanyUsers(id);
+  },
+
+  login: async function ({
+    name,
+    password,
+  }: Requests.LoginRequest): Promise<LoginResponse> {
+    const user = await UserLogic.authenticate(name, password);
+
+    return {
+      _id: user._id!.toString(),
+    };
   },
 };

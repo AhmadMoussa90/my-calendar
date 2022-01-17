@@ -42,3 +42,8 @@ export type AppointmentRequest = {
 export type ReservationRequest = {
   reservationInput: Reservation;
 };
+
+export type LoginRequest = {
+  name: String;
+  password: String;
+};

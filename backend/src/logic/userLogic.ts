@@ -20,3 +20,14 @@ export async function createUser(
 export async function getCompanyUsers(companyID: String) {
   return UserModel.find({ company: companyID });
 }
+
+export async function authenticate(
+  name: String,
+  password: String
+): Promise<User> {
+  const user = await UserModel.findOne({ name: name });
+  if (!user) throw new Error("User not found");
+  if (user.password !== password) throw new Error("Incorrect Error");
+
+  return user;
+}

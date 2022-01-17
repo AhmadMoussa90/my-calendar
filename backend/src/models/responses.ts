@@ -39,3 +39,7 @@ export interface ReservationResponse
   partner: Partner;
   appointment: AppointmentResponse;
 }
+
+export type LoginResponse = {
+  _id: String;
+};
