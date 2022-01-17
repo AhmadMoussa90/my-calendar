@@ -5,16 +5,10 @@ import "./App.css";
 import CompanyList from "./components/companies/CompanyList";
 import MainNavigation from "./components/shared/Navigation/MainNavigation";
 import UserList from "./components/users/UserList";
-import { Company, Room, TimeSlot, User } from "./models";
+import { Company, User } from "./models";
 import { fetchData } from "./utils/intercall";
-import {
-  COMPANIES,
-  COMPANY_ROOMS,
-  COMPANY_USERS,
-  TIMESLOTS,
-  USER_LOGIN,
-} from "./utils/queries";
-import Calendar from "./components/Calendar/Calendar";
+import { COMPANIES, COMPANY_USERS, USER_LOGIN } from "./utils/queries";
+import MyCalendar from "./components/Calendar/MyCalendar";
 
 function App() {
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -23,8 +17,6 @@ function App() {
   const [user, setUser] = useState<User>();
   const [isAuth, setIsAuth] = useState<Boolean>(false);
   const [warningMessage, setWarningMessage] = useState<String | null>(null);
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
 
   useEffect(() => {
     const loadCompanies = async () => {
@@ -58,39 +50,6 @@ function App() {
     // company selected
     if (companyID && users.length === 0) loadCompanyUsers();
   }, [companyID, users]);
-
-  useEffect(() => {
-    const loadRooms = async () => {
-      const graphqlQuery = {
-        query: COMPANY_ROOMS,
-        variables: {
-          id: companyID,
-        },
-      };
-
-      const resData = await fetchData(graphqlQuery);
-      if (resData.errors) throw new Error("Fetching rooms failed!");
-      setRooms(resData.data.CompanyRooms);
-    };
-
-    // isAuth
-    if (isAuth && rooms && rooms.length === 0) loadRooms();
-  }, [companyID, isAuth, rooms]);
-
-  useEffect(() => {
-    const loadTimeSlots = async () => {
-      const graphqlQuery = {
-        query: TIMESLOTS,
-      };
-
-      const resData = await fetchData(graphqlQuery);
-      if (resData.errors) throw new Error("Fetching timeslots failed!");
-      setTimeSlots(resData.data.timeSlots);
-    };
-
-    // isAuth
-    if (isAuth && timeSlots && timeSlots.length === 0) loadTimeSlots();
-  }, [isAuth, timeSlots]);
 
   const onSelectCompanyHandler = (id: String | null) => {
     setCompanyID(id);
@@ -150,7 +109,7 @@ function App() {
                 />
               )}
               {isAuth && (
-                <Calendar roomsItems={rooms} timeSlotsItems={timeSlots} />
+                <MyCalendar companyID={companyID} userID={user?._id} />
               )}
             </main>
           </div>
