@@ -20,8 +20,8 @@ export async function createRoom(
   return room.save();
 }
 
-export async function getAllRooms(): Promise<Room[]> {
-  return RoomModel.find();
+export async function getAllRooms(): Promise<RoomResponse[]> {
+  return RoomModel.find().populate("company");
 }
 
 export async function getCompanyRooms(

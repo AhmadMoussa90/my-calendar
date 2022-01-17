@@ -51,6 +51,12 @@ export default buildSchema(`
       _id: ID!
     }
 
+    type Calendar {
+      rooms: [Room!]!
+      timeSlots: [TimeSlot!]!
+      companyReservations: [Reservation!]!
+    }
+
     input CompanyInput {
         name: String!
     }
@@ -104,6 +110,7 @@ export default buildSchema(`
         companies: [Company!]!
         companyUsers(id: ID!): [User!]!
         companyRooms(id: ID!): [Room!]!
+        companyCalendar(id: ID!): Calendar!
         login(name: String!, password: String!): AuthData!
     }
 

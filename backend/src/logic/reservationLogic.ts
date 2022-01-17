@@ -49,3 +49,35 @@ export async function createReservation(
   });
   return reservation.save();
 }
+
+export async function getCompanyReservations(
+  companyID: String
+): Promise<ReservationResponse[]> {
+  return ReservationModel.find({ company: companyID })
+    .populate({
+      path: "user",
+      populate: {
+        path: "company",
+        model: CompanyModel,
+      },
+    })
+    .populate("partner")
+    .populate({
+      path: "appointment",
+      populate: {
+        path: "timeSlot",
+        model: TimeSlotModel,
+      },
+    })
+    .populate({
+      path: "appointment",
+      populate: {
+        path: "room",
+        model: RoomModel,
+        populate: {
+          path: "company",
+          model: CompanyModel,
+        },
+      },
+    });
+}

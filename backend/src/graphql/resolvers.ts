@@ -17,6 +17,7 @@ import {
   AppointmentResponse,
   ReservationResponse,
   LoginResponse,
+  CalendarResponse,
 } from "../models/responses";
 import { User } from "../models/user";
 import { Room } from "../models/room";
@@ -101,7 +102,7 @@ export default {
     };
   },
 
-  rooms: async function (): Promise<Room[]> {
+  rooms: async function (): Promise<RoomResponse[]> {
     return RoomLogic.getAllRooms();
   },
 
@@ -314,6 +315,20 @@ export default {
 
     return {
       _id: user._id!.toString(),
+    };
+  },
+
+  companyCalendar: async function ({
+    id,
+  }: Requests.IdRequest): Promise<CalendarResponse> {
+    const rooms = await RoomLogic.getCompanyRooms(id);
+    const timeSlots = await TimeSlotLogic.getAllTimeSlots();
+    const reservations = await ReservationLogic.getCompanyReservations(id);
+
+    return {
+      rooms,
+      timeSlots,
+      companyReservations: reservations,
     };
   },
 };

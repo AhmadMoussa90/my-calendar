@@ -43,3 +43,9 @@ export interface ReservationResponse
 export type LoginResponse = {
   _id: String;
 };
+
+export type CalendarResponse = {
+  rooms: RoomResponse[];
+  timeSlots: TimeSlot[];
+  companyReservations: ReservationResponse[];
+};
