@@ -27,7 +27,7 @@ export async function authenticate(
 ): Promise<User> {
   const user = await UserModel.findOne({ name: name });
   if (!user) throw new Error("User not found");
-  if (user.password !== password) throw new Error("Incorrect Error");
+  if (user.password !== password) throw new Error("Incorrect Password");
 
   return user;
 }
