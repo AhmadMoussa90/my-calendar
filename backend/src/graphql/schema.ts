@@ -103,6 +103,7 @@ export default buildSchema(`
         reservation(id: ID!): Reservation!
         companies: [Company!]!
         companyUsers(id: ID!): [User!]!
+        companyRooms(id: ID!): [Room!]!
         login(name: String!, password: String!): AuthData!
     }
 

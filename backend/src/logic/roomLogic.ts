@@ -23,3 +23,9 @@ export async function createRoom(
 export async function getAllRooms(): Promise<Room[]> {
   return RoomModel.find();
 }
+
+export async function getCompanyRooms(
+  companyID: String
+): Promise<RoomResponse[]> {
+  return RoomModel.find({ company: companyID }).populate("company");
+}

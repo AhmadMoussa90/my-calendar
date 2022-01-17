@@ -17,6 +17,7 @@ export async function createUser(
   });
   return user.save();
 }
+
 export async function getCompanyUsers(companyID: String) {
   return UserModel.find({ company: companyID });
 }

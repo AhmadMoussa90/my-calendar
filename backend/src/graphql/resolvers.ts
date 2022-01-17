@@ -300,6 +300,12 @@ export default {
     return UserLogic.getCompanyUsers(id);
   },
 
+  companyRooms: async function ({
+    id,
+  }: Requests.IdRequest): Promise<RoomResponse[]> {
+    return RoomLogic.getCompanyRooms(id);
+  },
+
   login: async function ({
     name,
     password,
