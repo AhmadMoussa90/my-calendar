@@ -25,7 +25,7 @@ const CompanyList: React.FC<{
           <FormLabel component="legend">Who is your company ?</FormLabel>
         </div>
       </div>
-      <div className="container border w-25 rounded">
+      <div className="container">
         {props.items.map((company) => {
           return (
             <div className="row rounded" key={company._id.toString()}>
