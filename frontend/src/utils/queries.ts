@@ -23,3 +23,21 @@ query CompanyUsers($id: ID!) {
   }
 }
 `;
+
+export const COMPANY_ROOMS = `
+query CompanyRooms($id: ID!) {
+  companyRooms(id: $id) {
+    _id,
+    name
+  }
+}
+`;
+
+export const TIMESLOTS = `
+{
+  timeSlots {
+    _id,
+    startDate
+  }
+}
+`;
