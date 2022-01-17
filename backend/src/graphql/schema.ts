@@ -101,6 +101,7 @@ export default buildSchema(`
         reservation(id: ID!): Reservation!
         companies: [Company!]!
         companyUsers(id: ID!): [User!]!
+        login(name: String!, password: String!): AuthData!
     }
 
     type RootMutation {
@@ -112,7 +113,6 @@ export default buildSchema(`
         createPartnership(partnershipInput: PartnershipInput): Partnership!
         createAppointment(appointmentInput: AppointmentInput): Appointment!
         createReservation(reservationInput: ReservationInput): Reservation!
-        login(name: String!, password: String!): AuthData!
     }
 
     schema {
