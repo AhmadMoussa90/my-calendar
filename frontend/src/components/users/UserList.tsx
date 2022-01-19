@@ -1,15 +1,9 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 
 import { User } from "../../models";
 import Card from "../shared/Card/Card";
-import UserItem from "./UserItem";
+import RadioGroupList from "../shared/RadioGroup/RadioGroupList";
 
 import classes from "./UserList.module.css";
 
@@ -72,28 +66,15 @@ const UserList: React.FC<{
   const userSelection = (
     <div className={`row ${classes.usersRadioButtons}`}>
       <div className="col">
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Who are you ?</FormLabel>
-          <RadioGroup
-            aria-label="user_name"
-            defaultValue=""
-            name="radio-buttons-group"
-            onClick={() => {
-              setSelectedUser(true);
-              setWarningMessage(null);
-            }}
-          >
-            {props.items.map((user) => {
-              return (
-                <UserItem
-                  key={user._id.toString()}
-                  user={user}
-                  onSelectUser={props.onSelectUser}
-                />
-              );
-            })}
-          </RadioGroup>
-        </FormControl>
+        <RadioGroupList
+          items={props.items}
+          title="Who are you ?"
+          onSelectItem={props.onSelectUser}
+          onRadioGroupClick={() => {
+            setSelectedUser(true);
+            setWarningMessage(null);
+          }}
+        />
       </div>
     </div>
   );
