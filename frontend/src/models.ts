@@ -37,3 +37,15 @@ export interface Reservation {
   partner: Partner;
   appointment: Appointment;
 }
+
+export type Calendar = {
+  rooms: [Room];
+  timeSlots: [TimeSlot];
+  companyReservations: [Reservation];
+};
+
+export type CurrentSlot = {
+  timeSlot: TimeSlot;
+  room: Room;
+  reservation?: Reservation | null;
+};
