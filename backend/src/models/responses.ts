@@ -34,7 +34,7 @@ export interface AppointmentResponse
 
 export interface ReservationResponse
   extends Omit<Reservation, "user" | "partner" | "appointment"> {
-  _id: string;
+  _id: String;
   user: UserResponse;
   partner: Partner;
   appointment: AppointmentResponse;
