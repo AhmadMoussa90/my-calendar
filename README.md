@@ -19,9 +19,9 @@ The database’s schema contains 8 tables:
 - **Partner**: a partner to a company.
 - **TimeSlot**: representing a timeslot with a start date (i.e., an hour).
 - **Partnership**: a relational table representing the relation between Partner and Company tables.
-- **Room**: holding all available rooms. Note that every room is allocated to 1 and only one company.
+- **Room**: holding all available rooms. Note that every room is allocated to one, and only one, company.
 - **Appointment**: an appointment represents the couple TimeSlot x Room; in other words, to make an appointment, we need a time (i.e., timeslot) with a place (i.e., room).
-- **Reservation**: a relational table representing the ternary relation between User, Partner and Company tables. It represents a reservation created by a user, to meet a partner at the specific time and in the specific room (i.e., an appointment).
+- **Reservation**: a relational table representing the ternary relation between User, Partner and Appointment tables. It represents a reservation created by a user, to meet a partner at the specific time and in the specific room (i.e., an appointment).
 
 you will ask yourself the following question:
 
