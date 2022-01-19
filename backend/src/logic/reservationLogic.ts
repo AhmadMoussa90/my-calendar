@@ -53,7 +53,12 @@ export async function createReservation(
 export async function getCompanyReservations(
   companyID: String
 ): Promise<ReservationResponse[]> {
-  return ReservationModel.find({ company: companyID })
+  const companyUsers = await UserModel.find({ company: companyID }, "_id");
+  return ReservationModel.find({
+    user: {
+      $in: companyUsers,
+    },
+  })
     .populate({
       path: "user",
       populate: {
@@ -80,4 +85,9 @@ export async function getCompanyReservations(
         },
       },
     });
+}
+
+export async function deleteReservation(id: String): Promise<Boolean> {
+  await ReservationModel.findByIdAndRemove(id);
+  return true;
 }

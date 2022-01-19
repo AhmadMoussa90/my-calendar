@@ -93,7 +93,12 @@ export default buildSchema(`
     input ReservationInput {
       user: ID!
       partner: ID!
-      appointment: ID!
+      appointment: AppointmentInput!
+    }
+
+    input CompanyTsPartnersInput {
+      company: ID!
+      timeSlot: ID!
     }
 
     type RootQuery {
@@ -111,6 +116,7 @@ export default buildSchema(`
         companyUsers(id: ID!): [User!]!
         companyRooms(id: ID!): [Room!]!
         companyCalendar(id: ID!): Calendar!
+        companytimeSlotPartners(companyTsPartnersInput: CompanyTsPartnersInput): [Partner!]!
         login(name: String!, password: String!): AuthData!
     }
 
@@ -123,6 +129,7 @@ export default buildSchema(`
         createPartnership(partnershipInput: PartnershipInput): Partnership!
         createAppointment(appointmentInput: AppointmentInput): Appointment!
         createReservation(reservationInput: ReservationInput): Reservation!
+        deleteReservation(id: ID!, userID: ID!): Boolean
     }
 
     schema {

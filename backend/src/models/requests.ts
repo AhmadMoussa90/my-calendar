@@ -40,10 +40,28 @@ export type AppointmentRequest = {
 };
 
 export type ReservationRequest = {
-  reservationInput: Reservation;
+  reservationInput: ReservationInput;
 };
+
+export interface ReservationInput extends Omit<Reservation, "appointment"> {
+  appointment: Appointment;
+}
 
 export type LoginRequest = {
   name: String;
   password: String;
+};
+
+export type CompanyTsPartnersResquest = {
+  company: String;
+  timeSlot: String;
+};
+
+export type CompanyTsPartnersInput = {
+  companyTsPartnersInput: CompanyTsPartnersResquest;
+};
+
+export type DeleteReservationInput = {
+  id: String;
+  userID: String;
 };

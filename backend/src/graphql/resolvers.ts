@@ -258,22 +258,27 @@ export default {
     );
     if (!partner) throw new Error("Invalid partner.");
 
-    const appointment = await AppointmentLogic.getAppointmentById(
-      reservationInput.appointment.toString()
+    const createdAppointment = await AppointmentLogic.createAppointment(
+      reservationInput.appointment.room.toString(),
+      reservationInput.appointment.timeSlot.toString()
     );
-    if (!appointment) throw new Error("Invalid appointment.");
+    if (!createdAppointment) throw new Error("Invalid appointment.");
+
+    const appointment = AppointmentLogic.getAppointmentById(
+      createdAppointment._id!
+    );
 
     const createdReservation = await ReservationLogic.createReservation(
       reservationInput.user.toString(),
       reservationInput.partner.toString(),
-      reservationInput.appointment.toString()
+      createdAppointment._id?.toString()!
     );
 
     return {
       _id: createdReservation!._id!.toString(),
       user: user,
       partner: partner,
-      appointment: appointment,
+      appointment: appointment as unknown as AppointmentResponse,
     };
   },
 
@@ -330,5 +335,30 @@ export default {
       timeSlots,
       companyReservations: reservations,
     };
+  },
+
+  companytimeSlotPartners: async function ({
+    companyTsPartnersInput,
+  }: Requests.CompanyTsPartnersInput): Promise<Partner[]> {
+    return await CompanyLogic.getTsAvailablePartners(
+      companyTsPartnersInput.company,
+      companyTsPartnersInput.timeSlot
+    );
+  },
+
+  deleteReservation: async function ({
+    id,
+    userID,
+  }: Requests.DeleteReservationInput): Promise<Boolean> {
+    const reservation = await ReservationLogic.getReservationById(id);
+    if (!reservation) throw new Error("Reservation not found!");
+
+    if (reservation.user._id.toString() !== userID)
+      throw new Error("User not authorized!");
+    await ReservationLogic.deleteReservation(id);
+    await AppointmentLogic.deleteAppointment(
+      reservation.appointment._id.toString()
+    );
+    return true;
   },
 };
