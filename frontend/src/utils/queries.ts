@@ -54,6 +54,7 @@ query CompanyCalendar($id: ID!) {
       startDate
     },
     companyReservations {
+      _id,
       user {
         _id,
         name
@@ -74,5 +75,48 @@ query CompanyCalendar($id: ID!) {
       }
     }
   }
+}
+`;
+
+export const COMPANY_TIMESLOT_AVAILABLE_PARTNERS = `
+query CompanytimeSlotAvailablePartners($companyID: ID!, $timeSlotID: ID!) {
+  companytimeSlotPartners(companyTsPartnersInput: {company: $companyID, timeSlot: $timeSlotID}) {
+    _id,
+    name
+  }
+}
+`;
+
+export const CREATE_RESERVATION = `
+mutation CreateReservation($userID: ID!, $partnerID: ID!, $roomID: ID!, $timeSlotID: ID!) {
+  createReservation(reservationInput: {user: $userID, partner: $partnerID, appointment: {room: $roomID, timeSlot: $timeSlotID}}) {
+    user {
+      name,
+      company {
+        name
+      }
+    },
+    partner {
+      name
+    },
+    appointment {
+      _id,
+      room {
+        name,
+        company {
+          name
+        }
+      },
+      timeSlot {
+        startDate
+      }
+    }
+  }
+}
+`;
+
+export const DELETE_RESERVATION = `
+mutation DeleteReservation($id: ID!, $userID: ID!) {
+  deleteReservation(id: $id, userID: $userID)
 }
 `;
