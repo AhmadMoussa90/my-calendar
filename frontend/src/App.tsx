@@ -12,11 +12,36 @@ import MyCalendar from "./components/Calendar/MyCalendar";
 
 function App() {
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [companyID, setCompanyID] = useState<String | null>();
+  const [companyID, setCompanyID] = useState<String | null>(() => {
+    const savedCompanyID = localStorage.getItem("companyID");
+
+    if (savedCompanyID !== "undefined") {
+      const initialValue = JSON.parse(savedCompanyID!);
+      return initialValue;
+    }
+  });
   const [users, setUsers] = useState<User[]>([]);
-  const [user, setUser] = useState<User>();
-  const [isAuth, setIsAuth] = useState<Boolean>(false);
+  const [user, setUser] = useState<User>(() => {
+    const savedUserID = localStorage.getItem("user");
+
+    if (savedUserID !== "undefined") {
+      const initialValue = JSON.parse(savedUserID!);
+      return initialValue;
+    }
+  });
+  const [isAuth, setIsAuth] = useState<Boolean>(() => {
+    if (user) return true;
+    return false;
+  });
   const [warningMessage, setWarningMessage] = useState<String | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem("companyID", JSON.stringify(companyID));
+  }, [companyID]);
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
   useEffect(() => {
     const loadCompanies = async () => {
@@ -58,13 +83,9 @@ function App() {
   const onSelectUserHandler = (id: String) =>
     setUser(users.filter((user) => user._id === id)[0]);
 
-  const returnBackHandler = () => {
-    setUsers([]);
-    setCompanyID(null);
-    setUser({} as User);
-  };
+  const returnBackHandler = () => clearData();
 
-  const logInHandler = async (password: String) => {
+  const onlogInHandler = async (password: String) => {
     setWarningMessage(null);
 
     const graphqlQuery = {
@@ -86,10 +107,26 @@ function App() {
     setIsAuth(true);
   };
 
+  const onLogOutHandler = () => clearData();
+
+  const clearData = () => {
+    localStorage.clear();
+    setUsers([]);
+    setCompanies([]);
+    setCompanyID(null);
+    setUser(null as unknown as User);
+    setWarningMessage(null);
+    setIsAuth(false);
+  };
+
   return (
     <Fragment>
       <div className="container">
-        <MainNavigation username={user?.name} />
+        <MainNavigation
+          isAuth={isAuth}
+          username={user?.name}
+          onLogOut={onLogOutHandler}
+        />
         <div className="row">
           <div className="col">
             <main>
@@ -99,16 +136,16 @@ function App() {
                   onSelectCompany={onSelectCompanyHandler}
                 />
               )}
-              {!isAuth && users.length > 0 && (
+              {!isAuth && companyID && users.length > 0 && (
                 <UserList
                   items={users}
                   warningMessage={warningMessage}
-                  logIn={logInHandler}
+                  logIn={onlogInHandler}
                   onSelectUser={onSelectUserHandler}
                   returnBackHandler={returnBackHandler}
                 />
               )}
-              {isAuth && (
+              {isAuth && companyID && user._id && (
                 <MyCalendar companyID={companyID} userID={user?._id} />
               )}
             </main>
