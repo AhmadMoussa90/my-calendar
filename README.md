@@ -29,7 +29,7 @@ you will ask yourself the following question:
 
 The reason is that not all appointments can be available, for example, we can imagine that, for some reasons, a reservation at “12:30 PM” at the room “ROOM_1” is not allowed! That’s why we need to dissociate the two tables.
 
-## Current Futures
+## Current Features
 
 The current version of the application (1.0.0) gives the ability to:
 
